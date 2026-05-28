@@ -1,0 +1,50 @@
+[
+  {
+    "id": "3ce79328-9fa3-481e-ba49-55fc0a3b7c9e",
+    "name": "Anil Kushwah",
+    "role": "Developer Lead",
+    "tag": "Leadership",
+    "initials": "AK",
+    "grad": "from-indigo to-cyan",
+    "img": null,
+    "quote": "We don't sell deliverables — we own outcomes. That's the whole company in one line.",
+    "createdAt": "2026-05-28T11:02:47.271Z",
+    "updatedAt": "2026-05-28T11:03:54.899Z"
+  },
+  {
+    "id": "f8d626f9-53b5-443b-b597-0e049940d68e",
+    "name": "RJVR",
+    "role": "Chief Technology Officer",
+    "tag": "Engineering",
+    "initials": "R",
+    "grad": "from-violet to-indigo",
+    "img": null,
+    "quote": "Good architecture is invisible until the day it quietly saves you from disaster.",
+    "createdAt": "2026-05-28T11:02:47.271Z",
+    "updatedAt": "2026-05-28T11:03:38.558Z"
+  },
+  {
+    "id": "df3f4e52-595a-4533-af86-7d16c5ed085d",
+    "name": "Vikram Singh",
+    "role": "Head of Marketplace Operations",
+    "tag": "Operations",
+    "initials": "VS",
+    "grad": "from-cyan to-emerald",
+    "img": null,
+    "quote": "Every product listing is a system. We engineer it like one, then optimize relentlessly.",
+    "createdAt": "2026-05-28T11:02:47.271Z",
+    "updatedAt": "2026-05-28T11:02:47.271Z"
+  },
+  {
+    "id": "72b4f4d8-06d0-49b1-a070-8d4867100219",
+    "name": "Neha Verma",
+    "role": "Director of Digital Marketing",
+    "tag": "Marketing",
+    "initials": "NV",
+    "grad": "from-indigo to-violet",
+    "img": null,
+    "quote": "Data tells us where to aim; creativity is what makes the message actually land.",
+    "createdAt": "2026-05-28T11:02:47.271Z",
+    "updatedAt": "2026-05-28T11:02:47.271Z"
+  }
+]
