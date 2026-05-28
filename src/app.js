@@ -34,6 +34,8 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: false,
 };
+console.log("Origin:", origin);
+console.log("Allowed:", config.clientUrls);
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
