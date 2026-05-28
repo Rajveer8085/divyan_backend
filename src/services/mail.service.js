@@ -16,6 +16,12 @@ export const getTransporter = () => {
       auth: { user: config.smtp.user, pass: config.smtp.pass },
       pool: true,
       maxConnections: 5,
+      // Cloud hosts (Railway) often have broken IPv6 egress to SMTP relays, which
+      // hangs until timeout. Force IPv4 and fail fast instead of blocking the request.
+      family: 4,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 20000,
     });
   }
   return transporter;
