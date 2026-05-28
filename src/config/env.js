@@ -6,6 +6,8 @@ dotenv.config();
 const toNumber = (value, fallback) => (value !== undefined ? Number(value) : fallback);
 const env = process.env.NODE_ENV || 'development';
 
+
+console.log(process.env.CLIENT_URL,"this is cleint url on server ")
 export const config = {
   env,
   isProd: env === 'production',
