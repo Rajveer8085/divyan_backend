@@ -26,8 +26,6 @@ app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 const LOCALHOST = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 const corsOptions = {
   origin(origin, callback) {
-    console.log("Origin:", origin);
-    console.log("Allowed:", config.clientUrls);
     if (!origin) return callback(null, true);
     if (config.clientUrls.includes(origin)) return callback(null, true);
     if (!config.isProd && LOCALHOST.test(origin)) return callback(null, true);

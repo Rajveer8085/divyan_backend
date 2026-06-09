@@ -46,14 +46,6 @@ export const verifyMailTransport = async () => {
 export const sendContactMails = async (data) => {
   const t = getTransporter();
 
-  console.log('────────────────────────────────────────────');
-  console.log('[MAIL] Sending contact emails…');
-  console.log('[MAIL] SMTP host :', config.smtp.host, '| port:', config.smtp.port);
-  console.log('[MAIL] SMTP user :', config.smtp.user || '(empty!)');
-  console.log('[MAIL] From      :', config.mailFrom);
-  console.log('[MAIL] → admin   :', config.adminEmail || '(ADMIN_EMAIL unset!)');
-  console.log('[MAIL] → user    :', data.email);
-
   const adminPromise = t.sendMail({
     from: config.mailFrom,
     to: config.adminEmail,
@@ -71,12 +63,10 @@ export const sendContactMails = async (data) => {
 
   const [adminResult, userResult] = await Promise.allSettled([adminPromise, userPromise]);
 
-  // Admin notification (the lead) — log outcome.
+  // Admin notification (the lead) — critical.
   if (adminResult.status === 'fulfilled') {
-    const info = adminResult.value;
-    console.log('[MAIL] ✅ ADMIN email SENT  | messageId:', info.messageId, '| accepted:', info.accepted, '| rejected:', info.rejected);
+    logger.info('Admin enquiry notification sent.');
   } else {
-    console.log('[MAIL] ❌ ADMIN email FAILED:', adminResult.reason?.message);
     logger.error('Admin notification failed:', adminResult.reason?.message);
     const err = new Error('We could not deliver your enquiry right now. Please try again shortly.');
     err.statusCode = 502;
@@ -84,15 +74,9 @@ export const sendContactMails = async (data) => {
   }
 
   // User acknowledgment — non-fatal.
-  if (userResult.status === 'fulfilled') {
-    const info = userResult.value;
-    console.log('[MAIL] ✅ USER  email SENT  | messageId:', info.messageId, '| accepted:', info.accepted, '| rejected:', info.rejected);
-  } else {
-    console.log('[MAIL] ⚠️  USER  email FAILED:', userResult.reason?.message);
+  if (userResult.status === 'rejected') {
     logger.warn('User acknowledgment failed:', userResult.reason?.message);
   }
-
-  console.log('────────────────────────────────────────────');
 
   return { adminDelivered: true, userAckDelivered: userResult.status === 'fulfilled' };
 };

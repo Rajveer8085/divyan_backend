@@ -1,10 +1,18 @@
 import multer from 'multer';
 import path from 'path';
+import { unlink } from 'fs';
 import { fileURLToPath } from 'url';
 import { randomUUID } from 'crypto';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const UPLOAD_DIR = path.join(__dirname, '..', '..', 'uploads');
+
+// Best-effort removal of a previously stored upload (e.g. "/uploads/emp-xxx.png").
+// Ignores missing files and any error — orphan cleanup must never break a request.
+export const removeUploadedFile = (imgPath) => {
+  if (!imgPath || typeof imgPath !== 'string' || !imgPath.startsWith('/uploads/')) return;
+  unlink(path.join(UPLOAD_DIR, path.basename(imgPath)), () => {});
+};
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOAD_DIR),

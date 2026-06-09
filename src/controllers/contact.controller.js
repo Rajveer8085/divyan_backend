@@ -8,7 +8,7 @@ export const submitContact = asyncHandler(async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
 
   const saved = await contactRepo.saveContact({ name, email, phone: phone || '', subject, message });
-  console.log(`[CONTACT] Enquiry saved to DB (id: ${saved.id}) from ${email} — now attempting email…`);
+  logger.info(`Contact enquiry saved (id: ${saved.id}).`);
 
   let userAckDelivered = false;
   try {
@@ -21,10 +21,8 @@ export const submitContact = asyncHandler(async (req, res) => {
       submittedAt: saved.createdAt,
     });
     userAckDelivered = result.userAckDelivered;
-    console.log(`[CONTACT] Email flow done. userAckDelivered=${userAckDelivered}`);
   } catch (err) {
     // Lead is safely stored; email is a nice-to-have.
-    console.log('[CONTACT] Email flow FAILED (lead still saved to DB):', err.message);
     logger.warn('Contact email not sent (enquiry saved to DB):', err.message);
   }
 
