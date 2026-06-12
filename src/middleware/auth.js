@@ -10,7 +10,13 @@ export const requireAuth = (req, res, next) => {
   }
 
   try {
-    req.user = jwt.verify(token, config.jwt.secret);
+    const payload = jwt.verify(token, config.jwt.secret);
+    // Tokens are signed with the same secret across roles (admin, creator).
+    // Admin routes must reject any non-admin token to prevent privilege escalation.
+    if (payload.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Admin access required' });
+    }
+    req.user = payload;
     next();
   } catch {
     return res.status(401).json({ success: false, message: 'Invalid or expired session' });

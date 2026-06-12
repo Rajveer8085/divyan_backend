@@ -4,11 +4,13 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 import { config } from './config/env.js';
 import contactRoutes from './routes/contact.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import employeeRoutes from './routes/employee.routes.js';
+import creatorRoutes from './routes/creator.routes.js';
 import { UPLOAD_DIR } from './middleware/upload.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
@@ -32,7 +34,8 @@ const corsOptions = {
     return callback(new Error(`Origin ${origin} not allowed by CORS`));
   },
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  credentials: false,
+  // Required so browsers send/receive the creator auth cookie cross-origin.
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -40,6 +43,7 @@ app.options('*', cors(corsOptions));
 
 app.use(express.json({ limit: '50kb' }));
 app.use(express.urlencoded({ extended: true, limit: '50kb' }));
+app.use(cookieParser());
 app.use(compression());
 if (!config.isTest) app.use(morgan(config.isProd ? 'combined' : 'dev'));
 
@@ -54,6 +58,7 @@ app.get('/', (req, res) => res.json({ name: 'Divyan Technologies API', version: 
 app.use('/api/contact', contactRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/employees', employeeRoutes);
+app.use('/api/creators', creatorRoutes);
 
 // 404 + centralized error handling
 app.use(notFound);
